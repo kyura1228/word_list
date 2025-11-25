@@ -20,7 +20,7 @@ function renderWords() {
         `;
         list.appendChild(div);
     });
-    saveWords(); // ← 単語帳表示時に保存
+    saveWords(); // ← localStorage に保存するようになりました
 }
 
 function renderFlashcard() {
@@ -94,18 +94,54 @@ window.editWord = function(idx) {
     }
 };
 
-// 単語帳データをCookieに保存
-function saveWords() {
-    document.cookie = "words=" + encodeURIComponent(JSON.stringify(words)) + ";path=/";
+// --- Cookie -> localStorage マイグレーション関数 ---
+function migrateCookieToLocalStorage() {
+    // Cookie に保存された 'words' を探す
+    const match = document.cookie.match(/(?:^|; )words=([^;]*)/);
+    if (!match) return;
+
+    // localStorage に既にデータがある場合は上書きしない
+    if (localStorage.getItem('words')) {
+        // 移行不要だが古い Cookie は削除しておく（任意）
+        try {
+            document.cookie = "words=; Max-Age=0; path=/";
+        } catch {}
+        return;
+    }
+
+    try {
+        const decoded = decodeURIComponent(match[1]);
+        const parsed = JSON.parse(decoded);
+        if (Array.isArray(parsed)) {
+            localStorage.setItem('words', JSON.stringify(parsed));
+        }
+        // 移行完了したら Cookie を削除
+        document.cookie = "words=; Max-Age=0; path=/";
+    } catch (e) {
+        console.error('Cookie -> localStorage の移行に失敗しました', e);
+    }
 }
 
-// Cookieから単語帳データを読み込み
+// 単語帳データを localStorage に保存
+function saveWords() {
+    try {
+        localStorage.setItem('words', JSON.stringify(words));
+    } catch (e) {
+        console.error('保存に失敗しました', e);
+    }
+}
+
+// localStorage から単語帳データを読み込み
 function loadWords() {
-    const match = document.cookie.match(/(?:^|; )words=([^;]*)/);
-    if (match) {
+    const raw = localStorage.getItem('words');
+    if (raw) {
         try {
-            words = JSON.parse(decodeURIComponent(match[1]));
-        } catch {}
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) words = parsed;
+        } catch (e) {
+            console.error('読み込みデータの解析に失敗しました', e);
+            words = [];
+        }
     }
 }
 
@@ -122,5 +158,7 @@ document.getElementById('backToMainBtn').addEventListener('click', () => {
     renderWords();
 });
 
+// ページ読み込み時: まず Cookie があれば移行、その後 localStorage から読み込む
+migrateCookieToLocalStorage();
 loadWords();
 renderWords();
