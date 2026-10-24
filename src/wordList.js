@@ -14,8 +14,8 @@ function renderWords() {
                 <span class="meaning">${item.meaning}</span>
             </span>
             <span class="actions">
-                <button onclick="editWord(${idx})">編集</button>
-                <button onclick="deleteWord(${idx})">削除</button>
+                <button class="editBtn" onclick="editWord(${idx})">編集</button>
+                <button class="deleteBtn" onclick="deleteWord(${idx})">削除</button>
             </span>
         `;
         list.appendChild(div);

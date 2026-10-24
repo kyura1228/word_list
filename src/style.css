@@ -1,6 +1,23 @@
+:root {
+    /* 基本色設定 */
+    --color-background: #0a192f; /* 深いネイビー（夜空のような背景） */
+    --color-text: #eefaff;        /* クリーンな白に近い文字色 */
+    --color-accent: #35f8cb;     /* 鮮やかでクールなアクセントカラー（シアン系） */
+    --color-secondary-acc: #067d61;
+    --color-secondary-bg: #172a45; /* コンポーネントの背景色 */
+
+    /* タイポグラフィ設定 */
+    --font-primary: 'Poppins', sans-serif; /* メインフォント：モダンで視認性が高い */
+    --font-display: 'Playfair Display', serif; /* 見出し用（高級感） */
+
+    /* 影とトランジションの定義 */
+    --shadow-glow: 0 4px 15px rgba(72, 255, 218, 0.2); /* アクセントカラーを活かしたグロー */
+    --transition-speed: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 優雅な動きの曲線 */
+}
+
 body {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f7f7f7 60%, #e3f2fd 100%);
+    background: linear-gradient(135deg, var(--color-background) 60%, var(--color-secondary-bg) 100%);
     margin: 0;
     padding: 32px;
 }
@@ -8,7 +25,7 @@ body {
     max-width: 700px;
     min-width: 340px;
     margin: auto;
-    background: #fff;
+    background: linear-gradient(135deg, var(--color-secondary-bg) 60%, var(--color-background) 100%);;
     padding: 40px 36px;
     border-radius: 20px;
     box-shadow: 0 4px 32px rgba(0,0,0,0.10);
@@ -27,14 +44,14 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 0;
+    padding: 4px 5px;
     border-bottom: 1px solid #e0e0e0;
     transition: background 0.2s;
     font-size: 1.15em;
+    background-color: var(--color-text);
+    border-radius: 5px;
 }
-.word-item:hover {
-    background: #f1f8ff;
-}
+
 .word {
     font-weight: bold;
     color: #1976d2;
@@ -46,20 +63,22 @@ h1 {
     font-size: 1.05em;
 }
 .actions button {
-    margin-left: 7px;
-    background: #e3f2fd;
-    color: #1976d2;
-    border: 1px solid #bbdefb;
-    transition: background 0.2s, color 0.2s;
-    font-size: 1em;
-    padding: 7px 14px;
-    border-radius: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background 0.2s;
+    font-size: medium;
 }
 .actions button:hover {
-    background: #1976d2;
-    color: #fff;
-    border-color: #1976d2;
+    background: var(--color-secondary-acc);
 }
+.deleteBtn {
+    margin: 6px;
+}
+
 form {
     display: flex;
     gap: 14px;
@@ -75,34 +94,37 @@ input[type="text"] {
     transition: border 0.2s;
 }
 input[type="text"]:focus {
-    border-color: #1976d2;
+    border-color: var(--color-accent);
     outline: none;
 }
 button {
     padding: 12px 22px;
     border: none;
     border-radius: 8px;
-    background: #1976d2;
+    background: var(--color-accent);
     color: #fff;
     cursor: pointer;
     font-size: 1.1em;
     transition: background 0.2s;
 }
 button:hover {
-    background: #1565c0;
+    background: var(--color-secondary-acc);
+    box-shadow: var(--shadow-glow);
+    transition: all, var(--transition-speed);
+    transform: translate(-1px, -3px);
 }
 #flashcardModeBtn, #backToMainBtn {
     margin-top: 18px;
     background: #fff;
-    color: #1976d2;
-    border: 1.5px solid #1976d2;
+    color: var(--color-accent);
+    border: 1.5px solid var(--color-accent);
     font-weight: bold;
     font-size: 1.1em;
     padding: 12px 22px;
     border-radius: 8px;
 }
 #flashcardModeBtn:hover, #backToMainBtn:hover {
-    background: #1976d2;
+    background: var(--color-accent);
     color: #fff;
 }
 .flashcard-content {
@@ -134,15 +156,15 @@ button:hover {
 }
 .flashcard-actions button {
     background: #fff;
-    color: #1976d2;
-    border: 1.5px solid #1976d2;
+    color: var(--color-accent);
+    border: 1.5px solid var(--color-accent);
     font-weight: bold;
     font-size: 1.1em;
     padding: 12px 22px;
     border-radius: 8px;
 }
 .flashcard-actions button:hover {
-    background: #1976d2;
+    background: var(--color-accent);
     color: #fff;
 }
 .flashcard-index {
