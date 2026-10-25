@@ -16,9 +16,6 @@ switch (true){
 }
 
 
-console.log("Dark is ", { isDarkMode }, "White is ", { isWhiteMode }, { nowColor });
-
-
 onColorClick.onclick = function() {
     change()
 }
@@ -32,12 +29,12 @@ function svgChange(color) {
     switch (color) {
         case "black":
             svgDiv.innerHTML = `
-            <img src="./src/assets/moon.svg" alt="moon">
+            <img src="./moon.svg" alt="moon">
             `
             break;
         case "white":
             svgDiv.innerHTML = `
-            <img src="./src/assets/sun.svg" alt="sun">
+            <img src="/sun.svg" alt="sun">
             `
             break;
         
