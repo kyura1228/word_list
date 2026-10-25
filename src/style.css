@@ -113,6 +113,12 @@ button:hover {
     transition: all, var(--transition-speed);
     transform: translate(-1px, -3px);
 }
+.colorBtn:hover {
+    background-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+    transition: all, var(--transition-speed);
+    transform: translate(-1px, -3px);
+}
 #flashcardModeBtn, #backToMainBtn {
     margin-top: 18px;
     background: #fff;

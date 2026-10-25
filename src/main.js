@@ -2,6 +2,11 @@ const indexHtml = document.getElementById("root");
 
 indexHtml.innerHTML = `
 <div class="container">
+        <header>
+            <button id="colorBtn" class="colorBtn">
+                <div id="svg"></div>
+            </button>
+        </header>
         <h1>単語帳</h1>
         <div id="mainView">
             <form id="addForm">
