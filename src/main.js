@@ -15,8 +15,11 @@ indexHtml.innerHTML = `
                 <button type="submit">追加</button>
             </form>
             <div class="word-list" id="wordList"></div>
-            <button id="flashcardModeBtn">フラッシュカード</button>
-        </div>
+                <button id="flashcardModeBtn">フラッシュカード</button>
+                <button id="importJsonBtn">インポート</button>
+                <input type="file" id="fileInput" style="display: none;">
+                <button id="exportJsonBtn">エクスポート</button>
+            </div>
         <div id="flashcardView" style="display:none;">
             <h2>フラッシュカード</h2>
             <div id="flashcard"></div>

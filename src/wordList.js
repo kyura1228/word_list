@@ -36,34 +36,34 @@ function renderFlashcard() {
             <div class="flashcard-meaning" style="display:${showMeaning ? 'block' : 'none'}">${item.meaning}</div>
         </div>
         <div class="flashcard-actions">
-            <button onclick="prevCard()">前へ</button>
-            <button onclick="flipCard()">めくる</button>
-            <button onclick="nextCard()">次へ</button>
+            <button id="prevCard">前へ</button>
+            <button id="flipCard">めくる</button>
+            <button id="nextCard">次へ</button>
         </div>
         <div class="flashcard-index">${currentIndex + 1} / ${words.length}</div>
     `;
 }
 
-function prevCard() {
-    if (words.length) {
-        currentIndex = (currentIndex - 1 + words.length) % words.length;
-        showMeaning = false;
+// フラッシュカードのボタンは表示切替時に再描画されるため、
+// document へのイベント委譲で、常に生成されたボタンを処理する
+document.addEventListener('click', (event) => {
+    if (event.target.closest('#prevCard')) {
+        if (words.length) {
+            currentIndex = (currentIndex - 1 + words.length) % words.length;
+            showMeaning = false;
+            renderFlashcard();
+        }
+    } else if (event.target.closest('#nextCard')) {
+        if (words.length) {
+            currentIndex = (currentIndex + 1) % words.length;
+            showMeaning = false;
+            renderFlashcard();
+        }
+    } else if (event.target.closest('#flipCard')) {
+        showMeaning = !showMeaning;
         renderFlashcard();
     }
-}
-
-function nextCard() {
-    if (words.length) {
-        currentIndex = (currentIndex + 1) % words.length;
-        showMeaning = false;
-        renderFlashcard();
-    }
-}
-
-function flipCard() {
-    showMeaning = !showMeaning;
-    renderFlashcard();
-}
+});
 
 document.getElementById('addForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -157,6 +157,45 @@ document.getElementById('backToMainBtn').addEventListener('click', () => {
     document.getElementById('mainView').style.display = 'block';
     renderWords();
 });
+
+document.getElementById('exportJsonBtn').addEventListener('click', function() {
+    const exportJson = JSON.stringify(words);
+    const blob = new Blob([exportJson], { type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'words.json';
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+})
+
+const fileInput = document.getElementById('fileInput');
+
+document.getElementById('importJsonBtn').addEventListener('click', function() {
+    fileInput.click();
+});
+fileInput.addEventListener('change', function(event) {
+    const importFile = event.target.files[0];
+    if (!importFile) return;
+
+    const reader = new FileReader();
+    
+
+    
+    reader.onload = (event) => {
+        let jsonContent = event.target.result;
+        let importJson = JSON.parse(jsonContent);
+        console.log(importJson);
+        words = importJson
+        renderWords()
+    };
+    reader.readAsText(importFile)
+})
+
 
 // ページ読み込み時: まず Cookie があれば移行、その後 localStorage から読み込む
 migrateCookieToLocalStorage();
